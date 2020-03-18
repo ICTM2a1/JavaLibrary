@@ -12,5 +12,6 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile group: 'org.ardulink', name: 'ardulink-core-base', version: '2.1.0'
+    compile group: 'org.ardulink', name: 'ardulink-core-serial-jssc', version: '2.1.0'
 }
