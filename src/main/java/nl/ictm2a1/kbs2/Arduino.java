@@ -89,7 +89,7 @@ public class Arduino implements Closeable {
     public void addReadHandler(Consumer<String> readHandler) throws TooManyListenersException {
         readHandlers.add(readHandler);
         if (serialReader == null) {
-            serialReader = new SerialReader((s) -> {
+            serialReader = new SerialReader(port.getInputStream(), (s) -> {
                 String s2 = s.replaceAll("[\r\n\b\f]", "");
                 readHandlers.forEach(c -> c.accept(s2));
             });
@@ -99,10 +99,12 @@ public class Arduino implements Closeable {
 
     private static class SerialReader implements SerialPortEventListener {
         private InputStream in;
+        private Consumer<String> onLine;
         private byte[] buffer = new byte[1024];
 
-        public SerialReader(InputStream in) {
+        public SerialReader(InputStream in, Consumer<String> onLine) {
             this.in = in;
+            this.onLine = onLine;
         }
 
         public void serialEvent(SerialPortEvent arg0) {
