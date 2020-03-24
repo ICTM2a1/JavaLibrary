@@ -16,6 +16,7 @@ public class Main {
                 Thread.sleep(1500);
                 arduino.addReadHandler(s -> {
                     if (s.isEmpty()) return;
+                    System.out.print(String.format("value: %s\r", s));
                     int i = Integer.parseInt(s);
                     if (state != (state = i > 500)) {
                         if (state) {
