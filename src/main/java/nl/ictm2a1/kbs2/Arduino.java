@@ -100,25 +100,25 @@ public class Arduino implements Closeable {
     private static class SerialReader implements SerialPortEventListener {
         private InputStream in;
         private Consumer<String> onLine;
-        private byte[] buffer = new byte[1024];
+        private StringBuilder builder;
 
         public SerialReader(InputStream in, Consumer<String> onLine) {
             this.in = in;
             this.onLine = onLine;
+            this.builder = new StringBuilder();
         }
 
-        public void serialEvent(SerialPortEvent arg0) {
-            int data;
-
+        public void serialEvent(SerialPortEvent event) {
             try {
-                int len = 0;
-                while ((data = in.read()) > -1) {
-                    if (data == '\n') {
-                        break;
+                int b;
+                while ((b = in.read()) != -1) {
+                    if (b == '\n') {
+                        onLine.accept(builder.toString());
+                        builder.setLength(0);
+                    } else {
+                        builder.append((char) b);
                     }
-                    buffer[len++] = (byte) data;
                 }
-                System.out.print(new String(buffer, 0, len));
             } catch (IOException e) {
                 e.printStackTrace();
                 System.exit(-1);

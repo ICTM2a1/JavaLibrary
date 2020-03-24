@@ -1,12 +1,6 @@
 package nl.ictm2a1.kbs2;
 
-import gnu.io.NRSerialPort;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.List;
-import java.util.TooManyListenersException;
 
 /**
  * Created by Under_Koen on 26/02/2020.
