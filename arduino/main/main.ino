@@ -10,7 +10,7 @@ int event = -1;
 
 void loop() {
   Serial.println(String(meter));
-  if(Serial.available() > 0) {
+  if(Serial.available() >= 2) {
     if (event < 0) {
       char c = Serial.read();
       if (c == '\n') {
@@ -19,7 +19,9 @@ void loop() {
       } else if (c == 'f') {
         event = 2;
       }
-    } else {
+    }
+
+    if (event > 0) {
       int v = Serial.read();
       if (event == 1 && v == 1) {
         led1 = true;
@@ -36,5 +38,4 @@ void loop() {
   digitalWrite(13, led1);
   digitalWrite(12, led2);
   meter = analogRead(A5);
-  delay(10);
 }
